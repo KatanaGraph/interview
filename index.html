@@ -1,0 +1,115 @@
+<!doctype html>
+<!-- See http://www.firepad.io/docs/ for detailed embedding docs. -->
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Katana Interview</title>
+  <link rel="icon" type="image/png" href="favicon.ico">
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+  <!-- ACE and its JavaScript mode and theme files -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/ace.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/mode-javascript.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/theme-textmate.js"></script>
+
+  <!-- Firepad -->
+  <link rel="stylesheet" href="https://firepad.io/releases/v1.5.9/firepad.css" />
+  <script src="https://firepad.io/releases/v1.5.9/firepad.min.js"></script>
+
+  <style>
+    html { height: 100%; }
+    body { margin: 0; height: 100%; position: relative; }
+    /* Height / width / positioning can be customized for your use case.
+       For demo purposes, we make firepad fill the entire browser. */
+    #firepad-container {
+      width: 100%;
+      height: 100%;
+    }
+    #config-fields {
+      position: fixed;
+      top: 0;
+      right: 10px;
+      margin: 10px;
+      padding: 10px;
+      border: 1px solid black;
+    }
+  </style>
+</head>
+
+<body onload="init()">
+  <div id="firepad-container"></div>
+  <div id="config-fields">
+    <a style="text-align:center; font-size: 1.67em; font-weight: bold; display: block; margin-bottom: 0.2em;">Configuration</a>
+    <a style="font-size=1.17em; font-weight: bold;">Language: </a>
+    <select name="language" id="language-select">
+      <option value="c_cpp">C/C++</option>
+      <option value="python">Python</option>
+    </select>
+  </div>
+
+  <script>
+    // Helper to get hash from end of URL or generate a random one.
+    function getRef() {
+      var ref = firebase.database().ref("public");
+      var hash = window.location.hash.replace(/#/g, '');
+      if (hash) {
+        ref = ref.child(hash);
+      } else {
+        ref = ref.push(); // generate unique location.
+        window.location = window.location + '#' + ref.key; // add it as a hash to the URL.
+      }
+      return ref;
+    }
+    
+     function initEditor() {
+      //// Get Firebase Database reference.
+      var firepadRef = getRef();
+      
+      //// Create ACE
+      var editor = ace.edit("firepad-container");
+      editor.setTheme("ace/theme/textmate");
+      editor.$blockScrolling = Infinity;
+      var session = editor.getSession();
+      session.setUseWrapMode(true);
+      session.setUseWorker(false);
+      var language = "python";
+      session.setMode("ace/mode/c_cpp");
+
+      //// Create Firepad.
+      var firepad = Firepad.fromACE(firepadRef, editor, {
+        defaultText: '# Python Editing with Firepad!\ndef go():\n  print("Hello, world.")\n'
+      });
+       
+      var languageSelector = document.getElementById("language-select");
+      languageSelector.onchange = function() {
+        session.setMode("ace/mode/" + languageSelector.value);
+      };
+    }
+    
+    function init() {
+      //// Initialize Firebase.
+      var firebaseConfig = {
+        apiKey: "AIzaSyCJ3plB5z_C1oFVUkjI3NgbnEXO5DWAGlM",
+        authDomain: "katanagraph-interview.firebaseapp.com",
+        projectId: "katanagraph-interview",
+        storageBucket: "katanagraph-interview.appspot.com",
+        messagingSenderId: "71531395473",
+        appId: "1:71531395473:web:fc5aec90c2baa75fd7c230"
+      };
+      
+      //// Initialize Firebase
+      var authInitialized = false;
+      firebase.initializeApp(firebaseConfig);
+      firebase.auth().onAuthStateChanged((user) => {
+        if (!authInitialized) {
+          authInitialized = true;
+          initEditor();
+        }
+      });
+      firebase.auth().signInAnonymously();
+    }
+  </script>
+</body>
+</html>
