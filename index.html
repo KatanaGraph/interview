@@ -105,7 +105,7 @@
       var authInitialized = false;
       firebase.initializeApp(firebaseConfig);
       firebase.auth().onAuthStateChanged((user) => {
-        if (!authInitialized) {
+        if (user && !authInitialized) {
           authInitialized = true;
           initEditor();
         }
