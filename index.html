@@ -43,6 +43,7 @@
     <a style="text-align:center; font-size: 1.67em; font-weight: bold; display: block; margin-bottom: 0.2em;">Configuration</a>
     <a style="font-size=1.17em; font-weight: bold;">Language: </a>
     <select name="language" id="language-select">
+      <option value="text">Text</option>
       <option value="c_cpp">C/C++</option>
       <option value="java">Java</option>
       <option value="python">Python</option>
@@ -75,8 +76,7 @@
       var session = editor.getSession();
       session.setUseWrapMode(true);
       session.setUseWorker(false);
-      var language = "python";
-      session.setMode("ace/mode/c_cpp");
+      session.setMode("ace/mode/text");
 
       //// Create Firepad.
       var firepad = Firepad.fromACE(firepadRef, editor, {
