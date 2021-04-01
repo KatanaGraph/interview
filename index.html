@@ -92,7 +92,9 @@
       //// Create Firepad.
       var firepad = Firepad.fromACE(firepadRef, editor);
       firepad.on('ready', function() {
-        session.SetValue("Interview " + today() + " <CANDIDATE>\n");
+        if (session.GetValue() === "") {
+          session.SetValue("Interview " + today() + " <CANDIDATE>\n");
+        }
         document.getElementById("firepad-container").style.visibility = "visible";
       });
 
