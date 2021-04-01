@@ -23,6 +23,7 @@
     html { height: 100%; }
     body { margin: 0; height: 100%; }
     #firepad-container {
+      visibility: hidden;
       width: 100%;
       height: 100%;
     }
@@ -82,6 +83,10 @@
       //// Create Firepad.
       var firepad = Firepad.fromACE(firepadRef, editor, {
         defaultText: '// Your code here'
+      });
+      
+      firepad.on('ready', function() {
+        document.getElementById("firepad-container").style.visibility = "visible";
       });
 
       var languageSelector = document.getElementById("language-select");
