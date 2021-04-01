@@ -92,10 +92,10 @@
       //// Create Firepad.
       var firepad = Firepad.fromACE(firepadRef, editor);
       firepad.on('ready', function() {
-        document.getElementById("firepad-container").style.visibility = "visible";
         if (editor.getValue() === "") {
           session.setValue("Interview " + today() + " <CANDIDATE>\n");
         }
+        document.getElementById("firepad-container").style.visibility = "visible";
       });
 
       var languageSelector = document.getElementById("language-select");
