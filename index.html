@@ -61,15 +61,16 @@
       }
       return ref;
     }
-    
-     function initEditor() {
+
+    function initEditor() {
       //// Get Firebase Database reference.
       var firepadRef = getRef();
-      
+
       //// Create ACE
       var editor = ace.edit("firepad-container");
       editor.setTheme("ace/theme/textmate");
       editor.$blockScrolling = Infinity;
+      editor.setShowPrintMargin(false);
       var session = editor.getSession();
       session.setUseWrapMode(true);
       session.setUseWorker(false);
@@ -80,7 +81,7 @@
       var firepad = Firepad.fromACE(firepadRef, editor, {
         defaultText: '// Your code here'
       });
-       
+
       var languageSelector = document.getElementById("language-select");
       languageSelector.onchange = function() {
         session.setMode("ace/mode/" + languageSelector.value);
@@ -97,7 +98,7 @@
         messagingSenderId: "71531395473",
         appId: "1:71531395473:web:fc5aec90c2baa75fd7c230"
       };
-      
+
       //// Initialize Firebase
       var authInitialized = false;
       firebase.initializeApp(firebaseConfig);
