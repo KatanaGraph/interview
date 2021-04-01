@@ -66,6 +66,14 @@
       }
       return ref;
     }
+    
+    function today() {
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, '0');
+      var mm = String(today.getMonth() + 1).padStart(2, '0');
+      var yyyy = today.getFullYear();
+      return mm + '/' + dd + '/' + yyyy;
+    }
 
     function initEditor() {
       //// Get Firebase Database reference.
@@ -82,11 +90,9 @@
       session.setMode("ace/mode/text");
 
       //// Create Firepad.
-      var firepad = Firepad.fromACE(firepadRef, editor, {
-        defaultText: '// Your code here'
-      });
-      
+      var firepad = Firepad.fromACE(firepadRef, editor);
       firepad.on('ready', function() {
+        session.SetValue("Interview " + today() + " <CANDIDATE>\n");
         document.getElementById("firepad-container").style.visibility = "visible";
       });
 
