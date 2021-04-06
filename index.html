@@ -4,12 +4,12 @@
   <meta charset="utf-8" />
   <title>Katana Interview</title>
   <link rel="icon" type="image/png" href="favicon.ico">
-  
+
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
-  
+
   <!-- ACE and its JavaScript mode and theme files -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/ace.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/mode-javascript.js"></script>
@@ -51,6 +51,14 @@
       <option value="java">Java</option>
       <option value="python">Python</option>
     </select>
+    <a style="font-size=1.17em; font-weight: bold;">Keybdindings: </a>
+    <select name="keybinding" id="keybinding-select">
+      <option value="null">Ace</option>
+      <option value="ace/keyboard/vim">Vim</option>
+      <option value="ace/keyboard/emacs">Emacs</option>
+      <option value="ace/keyboard/sublime">Sublime</option>
+      <option value="ace/keyboard/vscode">VSCode</option>
+    </select>
   </div>
 
   <script>
@@ -66,7 +74,7 @@
       }
       return ref;
     }
-    
+
     function today() {
       var today = new Date();
       var dd = String(today.getDate()).padStart(2, '0');
@@ -102,8 +110,13 @@
       languageSelector.onchange = function() {
         session.setMode("ace/mode/" + languageSelector.value);
       };
+
+      var keybindingSelector = document.getElementById("keybinding-select");
+      keybindingSelector.onchange = function() {
+        editor.setKeyboardHandler(languageSelector.value);
+      };
     }
-    
+
     function init() {
       //// Initialize Firebase.
       var firebaseConfig = {
