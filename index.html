@@ -6,18 +6,30 @@
   <link rel="icon" type="image/png" href="favicon.ico">
 
   <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+  <script src="firebase-8.3.1/firebase-app.js"></script>
+  <script src="firebase-8.3.1/firebase-auth.js"></script>
+  <script src="firebase-8.3.1/firebase-database.js"></script>
 
-  <!-- ACE and its JavaScript mode and theme files -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/ace.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/mode-javascript.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/theme-textmate.js"></script>
+  <!-- Ace Editor -->
+  <script src="ace-1.4.12/ace.js"></script>
+  <!-- Languages -->
+  <script src="ace-1.4.12/mode-text.js"></script>
+  <script src="ace-1.4.12/mode-c_cpp.js"></script>
+  <script src="ace-1.4.12/mode-csharp.js"></script>
+  <script src="ace-1.4.12/mode-golang.js"></script>
+  <script src="ace-1.4.12/mode-java.js"></script>
+  <script src="ace-1.4.12/mode-python.js"></script>
+  <!-- Themes -->
+  <script src="ace-1.4.12/theme-textmate.js"></script>
+  <!-- Keybindings -->
+  <script src="ace-1.4.12/keybinding-vim.js"></script>
+  <script src="ace-1.4.12/keybinding-emacs.js"></script>
+  <script src="ace-1.4.12/keybinding-sublime.js"></script>
+  <script src="ace-1.4.12/keybinding-vscode.js"></script>
 
   <!-- Firepad -->
-  <link rel="stylesheet" href="https://firepad.io/releases/v1.5.9/firepad.css" />
-  <script src="https://firepad.io/releases/v1.5.9/firepad.min.js"></script>
+  <link rel="stylesheet" href="firepad-1.5.9/firepad.css" />
+  <script src="firepad-1.5.9/firepad.min.js"></script>
 
   <style>
     html { height: 100%; }
@@ -41,7 +53,8 @@
 <body onload="init()">
   <div id="firepad-container"></div>
   <div id="config-fields">
-    <a style="text-align:center; font-size: 1.67em; font-weight: bold; display: block; margin-bottom: 0.2em;">Configuration</a>
+    <a style="text-align:center; font-size: 1.67em; font-weight: bold;">Configuration</a>
+    <span style="display: block; margin-bottom: 0.4em;"></span>
     <a style="font-size=1.17em; font-weight: bold;">Language: </a>
     <select name="language" id="language-select">
       <option value="text">Text</option>
@@ -51,9 +64,10 @@
       <option value="java">Java</option>
       <option value="python">Python</option>
     </select>
+    <span style="display: block; margin-bottom: 0.4em;"></span>
     <a style="font-size=1.17em; font-weight: bold;">Keybdindings: </a>
     <select name="keybinding" id="keybinding-select">
-      <option value="null">Ace</option>
+      <option value="default">Ace</option>
       <option value="ace/keyboard/vim">Vim</option>
       <option value="ace/keyboard/emacs">Emacs</option>
       <option value="ace/keyboard/sublime">Sublime</option>
@@ -113,7 +127,12 @@
 
       var keybindingSelector = document.getElementById("keybinding-select");
       keybindingSelector.onchange = function() {
-        editor.setKeyboardHandler(keybindingSelector.value);
+        var value = keybindingSelector.value;
+        if (value === "default") {
+          editor.setKeyboardHandler(null);
+        } else {
+          editor.setKeyboardHandler(value);
+        }
       };
     }
 
