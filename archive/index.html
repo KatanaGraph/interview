@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Archive</title>
+  <link rel="icon" type="image/png" href="../favicon.ico">
+
+  <!-- Firebase -->
+  <script src="../firebase-8.3.1/firebase-app.js"></script>
+  <script src="../firebase-8.3.1/firebase-auth.js"></script>
+  <script src="../firebase-8.3.1/firebase-database.js"></script>
+
+  <style>
+    html { height: 100%; }
+    body { margin: 0; height: 100%; }
+    #ref_list {
+      display: block;
+    }
+  </style>
+</head>
+
+<body onload="init()">
+  <div id="ref_list"></div>
+  <script>
+    function initList() {
+      var ref_list = document.getElementById("ref_list");
+      var query = firebase.database().ref("public").orderByKey();
+      query.once("value")
+        .then(function(snapshot) {
+          snapshot.forEach(function(childSnapshot) {
+            var key = childSnapshot.key;
+            var elem = document.createElement("a");
+            elem.text = key;
+            elem.href = "../#" + key;
+            elem.style.display = "block";
+            ref_list.appendChild(elem);
+          });
+        });
+    }
+
+    function init() {
+      var firebaseConfig = {
+        apiKey: "AIzaSyCJ3plB5z_C1oFVUkjI3NgbnEXO5DWAGlM",
+        authDomain: "katanagraph-interview.firebaseapp.com",
+        projectId: "katanagraph-interview",
+        storageBucket: "katanagraph-interview.appspot.com",
+        messagingSenderId: "71531395473",
+        appId: "1:71531395473:web:fc5aec90c2baa75fd7c230"
+      };
+
+      var authInitialized = false;
+      firebase.initializeApp(firebaseConfig);
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user && !authInitialized) {
+          authInitialized = true;
+          initList();
+        }
+      });
+      firebase.auth().signInAnonymously();
+    }
+  </script>
+</body>
+</html>
