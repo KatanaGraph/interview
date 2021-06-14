@@ -116,7 +116,7 @@
       var firepad = Firepad.fromACE(firepadRef, editor);
       firepad.on('ready', function() {
         if (editor.getValue() === "") {
-          session.setValue("Interview " + today() + " <CANDIDATE>\n");
+          session.setValue("Interview " + today() + " <CANDIDATE>" + "\n".repeat(40));
         }
         document.getElementById("firepad-container").style.visibility = "visible";
       });
