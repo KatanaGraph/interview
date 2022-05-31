@@ -111,6 +111,8 @@
       session.setUseWrapMode(true);
       session.setUseWorker(false);
       session.setMode("ace/mode/text");
+      session.setUseSoftTabs(true);
+      session.setTabSize(2);
 
       //// Create Firepad.
       var firepad = Firepad.fromACE(firepadRef, editor);
